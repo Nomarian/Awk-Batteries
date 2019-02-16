@@ -2,6 +2,7 @@
 #!/usr/bin/gawk -E
 
 # gawk -E would let you deal with flags (not POSIX)
+# You can however call the command as echo.awk -- -n, but linux hates #!
 
 BEGIN {
   printf ARGV[1]
