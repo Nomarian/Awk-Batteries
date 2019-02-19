@@ -3,12 +3,6 @@
 { a[NR]=$0 }
 
 END {
- if (NR>10) {
-	i=NR-9
-  } else {
-	i=1
- }
-
- for (;i<=NR;i++)
+ for (i = NR > 10 ? NR-9 : 1;i<=NR;i++)
 	print a[i]
 }
