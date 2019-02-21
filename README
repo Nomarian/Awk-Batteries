@@ -4,3 +4,17 @@ Translation of the basic Unix toolkit in awk
 Simple/
 	Portable and often naive approach
 
+Modules/
+	Only functions allowed here
+
+Commands/
+	each command is a directory containing the command
+	extension .test are tests the command must pass
+	each extension corresponds to its interpreter and is interpreter specific
+	.gawk is gawk specific
+	.bawk is busybox awk
+	.oawk is old/original awk
+	.mawk is mawk
+	.rawk is runawk
+	.shawk is a shellscript wrapper
+
