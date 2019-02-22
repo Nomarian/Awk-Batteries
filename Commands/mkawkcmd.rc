@@ -1,0 +1,6 @@
+#!/usr/bin/rc
+
+cmd=$1
+shift
+cat $*
+echo;echo;echo $cmd
