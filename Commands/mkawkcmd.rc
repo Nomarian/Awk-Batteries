@@ -1,10 +1,8 @@
 #!/usr/bin/rc
 
-# will output the awk command with modules included into stdout
-# you can use your shell to save this and then run a file
-# useful for redirecting to a pastebin
+# everything will go into stdout
 
-cmd=$1
-shift
-cat $*
-echo;echo;echo $cmd
+~ $#* 0 && {echo '[awk program] [files]'; exit 0}
+
+*=$* { shift; ~ $#* 0 || cat $* }
+echo;echo;echo $1
