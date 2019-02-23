@@ -1,9 +1,0 @@
-#!/usr/bin/rc
-
-~ $#* 0 && exit 0
-
-# ARGS must be the Modules/ directory
-
-cd $*
-cat *
-
