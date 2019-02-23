@@ -10,11 +10,12 @@ Modules/
 Commands/
 	each command is a directory containing the command
 	extension .test are tests the command must pass
-	each extension corresponds to its interpreter and is interpreter specific
+	 If there are too many tests, they will be in a test/ directory
+	each extension corresponds to its interpreter
 	.gawk is gawk specific
 	.bawk is busybox awk
 	.oawk is old/original awk
 	.mawk is mawk
 	.rawk is runawk
 	.shawk is a shellscript wrapper
-
+	.awk is portable across all
