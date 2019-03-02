@@ -1,0 +1,3 @@
+
+FILE as args
+convert file if no stdin (sponge)
