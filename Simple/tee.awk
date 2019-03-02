@@ -1,9 +1,8 @@
 #!/usr/bin/awk -f
 
-# Good for Simple/, but reestructuring the loops would yield faster results
+# usage: stdin | tee [files]
 
 BEGIN {
- usage="usage: tee [files]"
 
  if (ARGV[1] == "-a" ) append++
 
