@@ -1,0 +1,2 @@
+
+This directory is a copy of Simple/ the difference is it prepends a unit of code that set RS or FS to their respective ones in the environment, this leads to unix tools which don't work line by line, and thus will work correctly, no matter the format, as long as FS and RS have been taken into account.
