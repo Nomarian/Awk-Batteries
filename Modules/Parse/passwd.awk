@@ -1,4 +1,7 @@
 
-# Parse
+# Parse passwd
 
-BEGIN { RS="\n";FS=":" }
+BEGIN {
+ RS="\n"
+ FS=":"
+}
