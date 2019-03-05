@@ -5,7 +5,7 @@ Simple/
 	Portable and often naive approach
 
 Modules/
-	Only functions allowed here
+	Functions and variables you can source from
 
 Commands/
 	each command is a directory containing the command
@@ -20,11 +20,14 @@ Commands/
 	.shawk is a shellscript wrapper
 	.awk is portable across all
 
-Shortest
+Shortest/
 	Shortest Implementation of Unix commands
 
-POSIX
+POSIX/
 	Tries to adhere to POSIX as much as possible
 
-RSFS
-	Shortest Implementation but inherits RS FS from ENVIRON
+RSFS/
+	Shortest Implementation but inherits RS or FS if set in ENVIRON
+
+Units/
+	Sourceable code you can import but is not that stable
