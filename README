@@ -19,3 +19,12 @@ Commands/
 	.rawk is runawk
 	.shawk is a shellscript wrapper
 	.awk is portable across all
+
+Shortest
+	Shortest Implementation of Unix commands
+
+POSIX
+	Tries to adhere to POSIX as much as possible
+
+RSFS
+	Shortest Implementation but inherits RS FS from ENVIRON
