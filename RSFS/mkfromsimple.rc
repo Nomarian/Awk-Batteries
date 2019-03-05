@@ -16,6 +16,6 @@ for (* in ../Simple/*.awk) {
  if (! test -f $file) {
   echo '	'^$file
   echo '#!'^$interpreter^' -f' | \
-   cat - ../Modules/rsfs.awk $* > $file
+   cat - ../Units/rsfs.awk $* > $file
  }
 }
