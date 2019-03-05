@@ -1,0 +1,11 @@
+#!/usr/bin/rc
+nl='
+'
+
+echo Creating
+for (* in ../Simple/*) {
+ ifs=('	' $nl) { x=`{basename $*} } # It's okay for files to have spaces
+ echo '	'^$x
+ echo '#!'^`{which awk}^' -f' | \
+  cat - ../Modules/rsfs.awk $* > `{ basename $x }
+}
