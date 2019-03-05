@@ -1,13 +1,20 @@
 #!/usr/bin/rc
 
-
 nl='
 '
 
-echo Creating:
-
 # It's okay for files to have spaces
 ifs=$nl { interpreter=`{ which awk } }
+
+ifs=() {
+ forcat=(
+  '#!'^$interpreter -f $nl
+  `{ cat ../Units/rsfs.awk }
+ )
+ forcat=$^forcat
+}
+
+echo Creating:
 
 for (* in ../Simple/*.awk) {
  ifs=($nl) { file=`{basename $*} }
@@ -15,7 +22,6 @@ for (* in ../Simple/*.awk) {
  # don't create a file if it already exists
  if (! test -f $file) {
   echo '	'^$file
-  echo '#!'^$interpreter^' -f' | \
-   cat - ../Units/rsfs.awk $* > $file
+  echo $forcat | cat - $* > $file
  }
 }
