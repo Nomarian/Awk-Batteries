@@ -1,5 +1,10 @@
 
-# ---------- csv.awk
+# ---------- csv.gawk
+
+#( Notes )#
+# fields cannot have \r or \n, strings can
+# If the last record ends in \r\n it will mark it as RS
+#  so you might want to NF>0
 
 BEGIN {
  FS="\036"
@@ -21,7 +26,6 @@ BEGIN {
 
 {
  string=RT;$0=""
-# printf("%s:\t%s%s",NR,RT,ORS)
 
  while (length(string)>0) {
   match(string,/^,/)
@@ -35,8 +39,5 @@ BEGIN {
   $(++NF)=substr(string,RSTART,RLENGTH)
   string=substr(string,RSTART+RLENGTH)
  }
-# exit
 }
-NF>0 { printf("%s:\t%s%s",NR,$0,ORS) }
 
-#END {print NR}
