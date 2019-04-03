@@ -39,6 +39,17 @@ BEGIN { # try using (regex) ?
  
  #rstringrc	= "'([^']*''[^']*)+'" # rc shell style
  rstringrc	= "'[^']*('')*[^']*'" # rc shell style
+
+ r8bit		= "(2[0-5][0-5]|1[0-9][0-9]|[0-9][0-9]?)" # 0-255
+ hex		= "[0-9a-fA-F]"
+ 
+# Matches ipv4 string
+ ripv4		= r8bit "\\." r8bit "\\." r8bit "\\." r8bit
+
+ ripv6		= hex "?"
+ ripv6		= ripv6 ripv6 ripv6 ripv6
+ ripv6		= ripv6 ":" ripv6 ":" ripv6 ":" ripv6 ":" ripv6 ":" ripv6 ":" ripv6 ":" ripv6
+
 }
 
 # you can print a variable and get the literal regex that you can use in your code
