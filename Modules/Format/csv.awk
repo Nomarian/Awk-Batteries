@@ -17,8 +17,7 @@ BEGIN {
  $0="" # I think this erases NF but it differs between awks
 
  # Can't split(/","/) so this if is a workaround
- if ( csvrecord ~ /^([^",]*,?("[^"]*,[^"]*"),?[^,]*)+$/ ) { # Basically /","/, but will fail with """
- # Which is mitigated with the Multi-line regex above, (so its good enough?)
+ if ( csvrecord ~ /^("[^",]*"|[^"]*)*("[^"]*,[^"]*")("[^",]*"|[^"]*)*$/ ) { # Basically /","/
   while(match(csvrecord,/^[^,"]*,|^"[^"]*("")*[^"]*",/)){
 	$(++NF)		= substr(csvrecord,RSTART,RLENGTH-1)
 	csvrecord	= substr(csvrecord,RSTART+RLENGTH)
