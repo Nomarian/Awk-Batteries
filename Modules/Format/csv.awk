@@ -18,7 +18,7 @@ BEGIN {
 
  # Can't split(/","/) so this if is a workaround
  if ( csvrecord ~ /^("[^",]*"|[^"]*)*("[^"]*,[^"]*")("[^",]*"|[^"]*)*$/ ) { # Basically /","/
-  while( match(csvrecord,/^([^,"]*|"[^"]*("")*[^"]*")*,/) ){
+  while( match(csvrecord,/^([^",]|"([^"]|"")*")*,/) ){
 	$(++NF)		= substr(csvrecord,RSTART,RLENGTH-1)
 	csvrecord	= substr(csvrecord,RSTART+RLENGTH)
   }
