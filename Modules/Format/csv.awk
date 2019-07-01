@@ -1,5 +1,5 @@
 
-# ---------- csv.awk
+# ---------- Modules/Format/csv.awk
 
 # Will convert all tokens into a field
 
@@ -17,15 +17,15 @@ BEGIN {
  $0="" # I think this erases NF but it differs between awks
 
  # Can't split(/","/) so this if is a workaround
- if ( csvrecord ~ /^("[^",]*"|[^"]*)*("[^"]*,[^"]*")("[^",]*"|[^"]*)*$/ ) { # Basically /","/
-  while( match(csvrecord,/^([^",]|"([^"]|"")*")*,/) ){
-	$(++NF)		= substr(csvrecord,RSTART,RLENGTH-1)
-	csvrecord	= substr(csvrecord,RSTART+RLENGTH)
-  }
-  $(++NF) = csvrecord
-  } else {
+ if ( csvrecord ~ /^([^",]*|"([^",]|"")*")*$|^(([^",]*|"([^",]|"")*")*,([^",]*|"([^",]|"")*")*)+$/ ) {
 	NF = split(csvrecord,csvfields,/,/) # This works if theres no ","
 	for ( i=1;i<=NF;i++ ) $i = csvfields[i]
+  } else {
+   while( match(csvrecord,/^([^",]|"([^"]|"")*")*,/) ){
+	$(++NF)		= substr(csvrecord,RSTART,RLENGTH-1)
+	csvrecord	= substr(csvrecord,RSTART+RLENGTH)
+   }
+	$(++NF) = csvrecord
  }
  csvrecord = ""
 }
