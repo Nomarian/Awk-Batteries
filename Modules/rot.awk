@@ -21,10 +21,15 @@ function crot(char,rot, pos){ # Character Rotater
   if (char ~ /^[A-Z]$/) { return toupper(alphabet[pos]) }
   return alphabet[pos]
 }
+
 function srot(string,rot, a,i) { # String Rotater
   split(string,a,"")
   for(i in a){ s = s crot(a[i],rot) }
   return s 
 }
+
 function crot13(char){ return crot(char,13) }
+
 function srot13(string, a,s){ return srot(string,13) }
+
+
