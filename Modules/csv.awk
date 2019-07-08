@@ -1,14 +1,16 @@
 
-# ---------- Modules/cwsv.awk
+# ---------- Modules/csv.awk
 
 function qcheck(s){ # true if quote has not been terminated
- return s ~ /"/ && s !~ /^([^"]|"[^"]*")*$/
+# return s ~ /"/ && s !~ /^([^"]|"[^"]*")*$/
+ return s ~ /^("[^"]*"|[^"])*"[^"]*$/
 }
 
 
 function csvsplit(string,array,		i,_start_,_length_){ # Will split string into array
 # returns -1 if quote is unterminated !/""/
  if ( string ~ /"/ && string !~ /^([^"]|"[^"]*")*$/ ) return -1
+ # replace with r["StringOdd"]?
 
  _start_ = RSTART; _length_ = RLENGTH
 
