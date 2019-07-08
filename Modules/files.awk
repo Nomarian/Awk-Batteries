@@ -1,4 +1,11 @@
 
+# -------- Modules/files.awk
+
+function dirname(_dirname_){ 
+  sub(/\/[^/]+$/,"",_dirname_)
+  return _dirname_
+}
+
 function basename(_name_,_suffix_) {
  gsub(/^\/|[^/]+\//,"",_name_)
  if (_suffix_) {
