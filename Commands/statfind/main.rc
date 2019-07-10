@@ -1,0 +1,49 @@
+#!/usr/bin/rc
+
+#. $HOME/Notes/Langs/Brc/Modules/std.rc
+nl=$ifs(3)
+fn lflat {lflat=$*;*=$($1);while(()){echo -n $1;shift;~ $#* 0&&break;echo -n $lflat(2)}}
+
+dir = $HOME/Notes/Langs/Awk/Commands/statfind
+
+args=$*
+
+awkarg=$*($#*) # Last arg is for gawk only
+
+for (* in $args) { ~ $1 $awkarg || files=($files $1) } # TODO vchop is broken
+
+~ $#args 0 && { echo 'ERROR: No args' > /dev/stderr ; exit 1 }
+~ $#awkarg 0 && { echo 'No args for awk' > /dev/stderr ; exit 1 }
+
+formats=`{ cat $dir/formats } # This differs between filesystems, make a wrapper
+
+divider	=`{ printf \r } # this could be anything, \a, \b
+format	=`{ lflat formats $divider }
+
+# test $*?
+
+# Files can have newlines
+ifs=$nl { # its a bummer, if awk exits, it could break the pipe and make the runtime way shorter
+ files=`{ find $files >[2] /dev/null || {
+  echo 'ERROR: Find?' > /dev/stderr; exit 1 }
+ }
+}
+
+~ $#files 0 && { echo No files found > /dev/stderr ;exit 1 }
+
+# Find argument list and chop it down for stat!
+
+arglimit=20000 # This depends on your system
+NumberOfArgs=$#files
+*=0
+while ( ! ~ $$#* $#files  ) {
+ *=`{ awk -v 'current='$*($#*) 'BEGIN{
+  for(i=1;(i<=ENVIRON["arglimit"] && current < ENVIRON["NumberOfArgs"]);i++)
+   print ++current
+ }' }
+# } # We divide arguments, this means stat and awk run multiple times, so state can't be preserved
+ stat -c $format $files($*) | awk -f $dir/module.awk -e $awkarg
+}
+
+# TODO
+ # stat must behave like du/find, so you can pipe to any proglang and if the pipe breaks, so does stat
