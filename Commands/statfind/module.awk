@@ -13,6 +13,24 @@ function _basename_(_name_,_suffix_) {
  return _name_
 }
 
+function makesizes(bytes,array){
+ # for loop that is stored in a 
+ # while loop that stores everything in an array, until it reaches 0
+ # better to use a while loop instead, and maybe later make pb and so on
+
+ split("0 0 0 0",array," ")
+ for (i=1;i<=length(array);i++) {
+  bytes /= 1024
+  if (bytes<1) break
+  array[i] = bytes
+ }
+
+ sizekb	=array[1]
+ sizemb	=array[2]
+ sizegb	=array[3]
+ sizetb	=array[4]
+}
+
 BEGIN {
  FS="\r"
 }
@@ -38,7 +56,7 @@ BEGIN {
  file		= $14
  FileName	= $15
  optimalIO	= $16
- totalsizeb	= $17
+ sizeb		= $17
  majordevicetype	= $18
  minordevicetype	= $19
  uid		= $20
@@ -56,6 +74,7 @@ BEGIN {
  fublocksize	= $32
 
 # Extensions
+ makesizes(sizeb)
  filename	= _basename_(file)
  if (filetype == "directory") {
 	dirname = file
