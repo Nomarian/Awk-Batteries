@@ -3,7 +3,6 @@
 # ----------------------- USERCONF
 
 dir = $HOME/Notes/Langs/Awk/Commands/statfind #REPLACEMEWITHYOURPWD
-arglimit=1000 # If too many args, rc files, which is why theres a temp file and a buffer
 
 # ----------------------- Variables
 
@@ -12,7 +11,7 @@ nl=$ifs(3)
 args=$*
 awkarg=$*($#*) # Last arg is for gawk only
 
-# ----------------------- Check
+# ----------------------- Arg Check
 
 ~ $#args 0 && { echo 'ERROR: No args' > /dev/stderr ; exit 1 }
 ~ $#awkarg 0 && { echo 'No args for awk' > /dev/stderr ; exit 1 }
@@ -21,67 +20,13 @@ awkarg=$*($#*) # Last arg is for gawk only
 
 fn lflat {lflat=$*;*=$($1);while(()){echo -n $1;shift;~ $#* 0&&break;echo -n $lflat(2)}}
 
-fn ftest {~ $1^* $1&&return 0||return 1}
-
-fn mktmp {~ $#USER 0&&{echo 'ERROR: NO $USER FOUND!' >/dev/stderr;return 1};~ /tmp* /tmp||{echo 'ERROR: /tmp/ NOT FOUND!' >/dev/stderr;return 1};*=/tmp/^$USER^.*;i=($i /tmp/^$USER^.^$#i) {while(~ $* $i($#i)){i=($i /tmp/^$USER^.^$#i)};echo -n $i($#i)}}
-
-fn cleanup {rm $tmpfile}
-
 # ----------------------- Prog
 
-*=$* { for (* in $args) { ~ $1 $awkarg || files=($files $1) } } # chopping the last arg
-
+# chopping the last arg
+*=$* { for (* in $args) { ~ $1 $awkarg || files=($files $1) } } 
 
 formats=`{ cat $dir/formats } # This differs between filesystems, make a wrapper
 divider	=`{ printf \r } # this could be anything, \a, \b
 format	=`{ lflat formats $divider }
 
-
-# Files can have newlines
-# finds output is usually too big, so we save to a temporary file
-tmpfile=`{mktmp}; touch $tmpfile || {echo ERROR: touch $tmpfile; exit 1 }
- find $files >[2] /dev/null >[1] $tmpfile # TODO Remove >[2] /dev/null
-
-fn awklinebuffer {
- # grabs a slice from file, from $1 to $2
- awk -v timesran'='$1 -v 'arglimit='$2 '
-  BEGIN {
-   current = arglimit * timesran
-   limit = current + arglimit
-   current++
-  }
-  NR==current,NR==limit {print;next}
-  NR>limit {exit 1}
-  ' $tmpfile
- awkstatus=$status # 0=EOF; 1=continue
-}
-
-fn awksizebuffer { # Not ready
- # TODO: x+=length($0), if it reaches a certain amount, stop it
- # `{limit}
-
-# Awk should not print because of an arglimit, but because of the stack limit
-# which is 8m, need awk to save the length, and exit if stacklimit is reached
-# instead of returning to where you were at, you can measure the fullpath, so a
-# /files($#files)/ {c++} instead of current and arglimit
- awkstatus=$status
-}
-
-awkstatus=1
-
-fn awkbuffer { files=() { awklinebuffer $* } }
-
-{ while(~ $awkstatus 1) {
- ifs=$nl { files=`{ awkbuffer $#timesran $arglimit } }
- timesran=($timesran $#timesran)
-
- ~ $#files 0 && awkstatus=0
-
- stat -c $format $files >[2] /dev/null
- # There's some weird change directory err, why is stat changing directory?
-} } | awk -f $dir/module.awk -e $awkarg
-
-cleanup
-
-# TODO
- # stat must behave like du/find, so you can pipe to any proglang and if the pipe breaks, so does stat
+find $files -print0 >[2] /dev/null | xargs -0 stat -c $format >[2] /dev/null | awk -f $dir/module.awk -e $awkarg
