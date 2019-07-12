@@ -2,7 +2,7 @@
 
 {
  words += NF
- chars += length($0 RS)
+ chars += length($0 ORS)
 }
 
 END {
