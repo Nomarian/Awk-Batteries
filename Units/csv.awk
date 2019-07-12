@@ -1,4 +1,7 @@
 
+# Setting CSVEVENFIELDS to anything will warn if fields are uneven
+# Setting CSVEVENFIELDS to 2 will exit
+
 # ---------- Units/csv.awk
 
 # Will convert all tokens into a field
@@ -34,6 +37,14 @@ BEGIN {
  csvrecord = ""
 }
 
+!lnf { lnf = NF }
+NF != lnf {
+ if (ENVIRON["CSVEVENFIELDS"]>0)
+  print "Uneven number of fields" > "/dev/stderr"
+
+ if (ENVIRON["CSVEVENFIELDS"]==2) exit 1
+}
+
 END {
  divider = "---------------------------"
 
@@ -44,5 +55,5 @@ END {
 }
 
 # TODO:
- # csv_equivalency_check, NF must be the same for all records
  # maybe gsub(/[\n]/,"\\n",csvrecord?)
+ # Headers?
