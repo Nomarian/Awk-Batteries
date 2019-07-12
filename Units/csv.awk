@@ -8,7 +8,9 @@ BEGIN {
 }
 
 # Multi-Line String
-(!csvrecord && /"/ && !/^([^"]|"[^"]*")*$/) || (csvrecord && /^([^"]|"[^"]*")*$/) {
+ # csvrecord is empty AND stringisodd ||
+  # OR csvrecord is not empty and string is anything or StringIsEven
+(!csvrecord && /^("[^"]*"|[^"])*"[^"]*$/) || (csvrecord && /^([^"]|"[^"]*")*$/) {
  csvrecord = csvrecord $0 ORS; NR--; next
 }
 
@@ -17,6 +19,8 @@ BEGIN {
  $0="" # I think this erases NF but it differs between awks
 
  # Can't split(/","/) so this if is a workaround
+  # also this regex looks long and complicated, its just /^z*$|^z*,z$/
+  # z is match [not a comma or quotes]| quotation
  if ( csvrecord ~ /^([^",]*|"([^",]|"")*")*$|^(([^",]*|"([^",]|"")*")*,([^",]*|"([^",]|"")*")*)+$/ ) {
 	NF = split(csvrecord,csvfields,/,/) # This works if theres no ","
 	for ( i=1;i<=NF;i++ ) $i = csvfields[i]
