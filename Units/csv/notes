@@ -1,0 +1,10 @@
+
+maybe have a full blown parser, but use -v to set the options?
+-v headers++
+-v mysplit++
+options: headers, mysplit, simplesplit, equivalencycheck, 
+
+For a correct csv parser (as indicated by RFC)
+ cat (headers headers-nf check split verify-nf-headers)^.awk > csv.awk
+
+You can keep removing and using other fields for leniency
