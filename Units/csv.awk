@@ -8,6 +8,7 @@
 
 BEGIN {
  FS="\037"
+ OFS=","
 }
 
 # Multi-Line String
@@ -40,7 +41,7 @@ BEGIN {
 !lnf { lnf = NF }
 NF != lnf {
  if (ENVIRON["CSVEVENFIELDS"]>0)
-  print "Uneven number of fields" > "/dev/stderr"
+  printf("Record %i has an uneven number of fields\n",NR) > "/dev/stderr"
 
  if (ENVIRON["CSVEVENFIELDS"]==2) exit 1
 }
