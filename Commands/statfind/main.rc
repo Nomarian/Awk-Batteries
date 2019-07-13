@@ -4,29 +4,38 @@
 
 dir = $HOME/Notes/Langs/Awk/Commands/statfind #REPLACEMEWITHYOURPWD
 
+# ----------------------- Arg Check
+
+awkargs=$*($#*) # last arg is for awk -e
+
+# The rest is for find
+
+switch($#*){
+ case 0; echo 'ERROR: No args' > /dev/stderr ; exit 1
+ case 1; args=$PWD
+ case 2; args=$1
+ case *; args=$*
+  *=$* { *=1 # add everything except for the last arg or chop
+   while(! ~ $#args $#*){ *=($* $args($#*)) }
+   shift; args=$*
+  }
+}
+
 # ----------------------- Variables
 
 nl=$ifs(3)
 
-args=$*
-awkarg=$*($#*) # Last arg is for gawk only
-
-# ----------------------- Arg Check
-
-~ $#args 0 && { echo 'ERROR: No args' > /dev/stderr ; exit 1 }
-~ $#awkarg 0 && { echo 'No args for awk' > /dev/stderr ; exit 1 }
-
-# ----------------------- Functions
-
-fn lflat {lflat=$*;*=$($1);while(()){echo -n $1;shift;~ $#* 0&&break;echo -n $lflat(2)}}
-
 # ----------------------- Prog
 
-# chopping the last arg
-*=$* { for (* in $args) { ~ $1 $awkarg || files=($files $1) } } 
+# separates the fields for stat -c 
+#divider	=`{ printf \r } # this could be anything, \a, \b
+~ $#divider 0 && divider=''
 
-formats=`{ cat $dir/formats } # This differs between filesystems, make a wrapper
-divider	=`{ printf \r } # this could be anything, \a, \b
-format	=`{ lflat formats $divider }
+# stat -c $format
+format=`{ awk '
+ BEGIN { getline; printf $0 }
+ {printf("%s%s",ENVIRON["divider"],$0)}
+ ' $dir/formats
+}
 
-find $files -print0 >[2] /dev/null | xargs -0 stat -c $format >[2] /dev/null | awk -f $dir/module.awk -e $awkarg
+find $args -print0 >[2] /dev/null | xargs -0 stat -c $format >[2] /dev/null | awk -f $dir/module.awk -e $awkargs
