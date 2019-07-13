@@ -4,6 +4,10 @@
 
 dir = $HOME/Notes/Langs/Awk/Commands/statfind #REPLACEMEWITHYOURPWD
 
+# ----------------------- Functions
+
+fn ftest { ~ $1^* $1 && return 0 || return 1 }
+
 # ----------------------- Arg Check
 
 awkargs=$*($#*) # last arg is for awk -e
@@ -15,11 +19,14 @@ switch($#*){
  case 1; args=$PWD
  case 2; args=$1
  case *; args=$*
-  *=$* { *=1 # add everything except for the last arg or chop
+  *=$* { *=1 # Chop (add everything except for the last arg)
    while(! ~ $#args $#*){ *=($* $args($#*)) }
    shift; args=$*
   }
+  ~ $1 */* || ftest $1 || args=($PWD $args)
 }
+
+# add -f for awk?
 
 # ----------------------- Variables
 
@@ -38,4 +45,5 @@ format=`{ awk '
  ' $dir/formats
 }
 
-find $args -print0 >[2] /dev/null | xargs -0 stat -c $format >[2] /dev/null | awk -f $dir/module.awk -e $awkargs
+find $args -print0 >[2] /dev/null | xargs -0 busybox stat -c $format >[2] /dev/null | awk -f $dir/module.awk -e $awkargs
+
