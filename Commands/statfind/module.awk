@@ -73,6 +73,8 @@ BEGIN {
  maxfilelength	= $31
  fublocksize	= $32
 
+ $0=file
+
 # Extensions
  makesizes(sizeb)
  filename	= _basename_(file)
