@@ -1,5 +1,8 @@
 #!/usr/bin/rc
 
+# first arg goes to awk, the rest goes to find
+# if finds args $1 contains a -, $PWD gets set as its starting point
+
 # ----------------------- USERCONF
 
 dir = $HOME/Notes/Langs/Awk/Commands/statfind #REPLACEMEWITHYOURPWD
@@ -10,21 +13,15 @@ fn ftest { ~ $1^* $1 && return 0 || return 1 }
 
 # ----------------------- Arg Check
 
-awkargs=$*($#*) # last arg is for awk -e
-
-# The rest is for find
+awkargs=$1
 
 switch($#*){
- case 0; echo 'ERROR: No args' > /dev/stderr ; exit 1
+ case 0; args=$PWD;	awkargs='{print file}'
  case 1; args=$PWD
- case 2; args=$1
- case *; args=$*
-  *=$* { *=1 # Chop (add everything except for the last arg)
-   while(! ~ $#args $#*){ *=($* $args($#*)) }
-   shift; args=$*
-  }
-  ~ $1 */* || ftest $1 || args=($PWD $args)
+ case *; shift;~ $1 '-'^* && args=$PWD;args=($args $*)
 }
+
+# you could add getflags
 
 # add -f for awk?
 
