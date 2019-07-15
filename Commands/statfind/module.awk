@@ -73,9 +73,14 @@ BEGIN {
  maxfilelength	= $31
  fublocksize	= $32
 
- $0=file
+ $0=file # for quick searching with //
+
+# Synonyms
+ username=uname
+ 
 
 # Extensions
+ 
  makesizes(sizeb)
  filename	= _basename_(file)
  if (filetype == "directory") {
