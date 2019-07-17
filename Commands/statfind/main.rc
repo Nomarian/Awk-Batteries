@@ -10,24 +10,33 @@ dir = $HOME/Notes/Langs/Awk/Commands/statfind #REPLACEMEWITHYOURPWD
 # ----------------------- Functions
 
 fn ftest { ~ $1^* $1 && return 0 || return 1 }
+fn collapse {ifs=() $1=`{for(* in $($1)){echo -n $*}}}
+
+# ----------------------- Defaults
+
+nl=$ifs(3)
+awkargs='{print file}'
+Path=$PWD
 
 # ----------------------- Arg Check
 
-awkargs=$1
-
 switch($#*){
- case 0; args=$PWD;	awkargs='{print file}'
- case 1; args=$PWD
- case *; shift;~ $1 '-'^* && args=$PWD;args=($args $*)
+ case 0; Path=$Path;awkargs=$awkargs
+ case 1; Path=$Path;awkargs=$1; shift
+ case *; awkargs=$1;shift
+  ~ $1 '-'^* && Path=$Path || {Path=$1;shift}
 }
+
+~ $Path */ && ifs=/ *=$* { # Remove trailing / from it (for dirname and filename)
+  Path=/^`{ echo -n $Path }
+  collapse Path
+}
+
+args=($Path $*)
 
 # you could add getflags
 
 # add -f for awk?
-
-# ----------------------- Variables
-
-nl=$ifs(3)
 
 # ----------------------- Prog
 
