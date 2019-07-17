@@ -1,0 +1,41 @@
+#!/usr/bin/rc
+
+# An example on using awkfind|statfind|findawk
+
+~ $* -l && long=1
+~ $* -a && all=1 # Won't print . or ..
+ifs=$ifs(3) *=`{
+ for(* in $*) { ~ $* -[al] || echo $* }
+}
+
+currentyear=`{date +%G}
+
+awkfind 'BEGIN {
+  s=" "
+  getline;NR-- # First file is current directory
+ }
+ 
+  ENVIRON["all"] || (!ENVIRON["all"] && filename !~ /^\./ ) { 
+  if (ENVIRON["long"]) { # total gets printed in the beginning, so saving everything, and printing at END
+    x = permissions s hardlinks s username s groupname s size s
+    x = x mod["month"] s mod["day"] s
+    if ( mod["year"] == ENVIRON["currentyear"] ) {
+     	x = x mod["hour"] ":" mod["minute"] s
+     } else {
+     	x = x mod["year"] s
+    }
+    totalsize = sizeb
+    a[NR] = x filename ;x=""
+   } else {
+    print filename
+  }
+ }
+ 
+ END {
+  if (ENVIRON["long"]) {
+   print "total " hbytes(totalsize)
+   for (i in a) print a[i]
+  }
+ }
+' $* -maxdepth 1
+
