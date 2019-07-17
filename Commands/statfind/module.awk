@@ -14,10 +14,7 @@ function _basename_(_name_,_suffix_) {
 }
 
 function makesizes(bytes,array){
- # for loop that is stored in a 
- # while loop that stores everything in an array, until it reaches 0
- # better to use a while loop instead, and maybe later make pb and so on
-
+ # For quick access, this creates size variables
  split("0 0 0 0",array," ")
  for (i=1;i<=length(array);i++) {
   bytes /= 1024
@@ -29,9 +26,35 @@ function makesizes(bytes,array){
  sizemb	=array[2]
  sizegb	=array[3]
  sizetb	=array[4]
+ # SIZE should be an array!
+ # size["bytes"] can then be used
+}
+
+function hbytes(i,	x,z){ # returns i in kb,mb,etc
+ x=i
+ while( (x/=1024) > 1){ i=x; z++ }
+ return sprintf("%.4g%sb",i,OrderedStringBytes[z])
+}
+
+function hBytes(i,	x,z){ # returns i in KB,MB,GB,etc
+ x=i
+ while( (x/=1000) > 1){ i=x; z++ }
+ return sprintf( "%.4g%sB", i, toupper(OrderedStringBytes[z]) )
+}
+
+function mkdate(string,array,epoch, a){
+ array[""]=string
+ array["epoch"]=epoch
+ split(string,a,/[-:. ]/)
+ for(i in dates) array[dates[i]]=a[i]
 }
 
 BEGIN {
+ split("k m g t p",OrderedStringBytes)
+ split("year month day hour minute seconds nanoseconds",dates)
+ split("jan feb mar apr may jun jul aug sep oct nov dec",months)
+ split("Jan Feb Mar Apr May Jun Jul Aug Sep Oct Nov Dec",Months)
+
  FS="\r"
 }
 
@@ -61,25 +84,37 @@ BEGIN {
  minordevicetype	= $19
  uid		= $20
  uname		= $21
+
+ # Dates!
  hbirth		= $22
- birth		= $23
+ obirth		= $23
+ mkdate(hbirth,birth,obirth)
+ 
  haccess	= $24
- access		= $25
+ oaccess	= $25
+ mkdate(haccess,access,oaccess)
+ 
  hmod		= $26
- mod		= $27
+ omod		= $27
+ mkdate(hmod,mod,omod)
+ 
  hchange	= $28
- change		= $29
+ ochange	= $29
+ mkdate(hchange,change,ochange)
+ 
  inodetotal	= $30
  maxfilelength	= $31
  fublocksize	= $32
 
- $0=file # for quick searching with //
+ for(i=1;i<=NF;i++) all[i]=$i
+ $0=file # for quick searching with // or $0 ~ ""
+
+# fsize["bytes"] = sizeb
+# fsize["kb"] = sizeb / 1024
 
 # Synonyms
  username=uname
  
-
-# Extensions
  
  makesizes(sizeb)
  filename	= _basename_(file)
@@ -95,3 +130,7 @@ BEGIN {
 # move formats to formats.awk, format makes the awkmodule
 # function erase(){ deleteit = deleteit file } SANITIZE FOR rm!
 # END { "rm " deletit }
+
+# date(%Y)?
+# stat -format dates wont output UTC? (-0400) at the end, unlike normal stat
+#
