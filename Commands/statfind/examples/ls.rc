@@ -17,15 +17,15 @@ awkfind 'BEGIN {
  
   ENVIRON["all"] || (!ENVIRON["all"] && filename !~ /^\./ ) { 
   if (ENVIRON["long"]) { # total gets printed in the beginning, so saving everything, and printing at END
-    x = permissions s hardlinks s username s groupname s size s
-    x = x mod["month"] s mod["day"] s
+    x = permissions s hardlinks s username s groupname s hbytes(sizeb) s
+    x = x Months[ int( mod["month"] ) ] s mod["day"] s
     if ( mod["year"] == ENVIRON["currentyear"] ) {
      	x = x mod["hour"] ":" mod["minute"] s
      } else {
      	x = x mod["year"] s
     }
-    totalsize = sizeb
-    a[NR] = x filename ;x=""
+    totalsize += sizeb
+    a[++q] = x filename ;x=""
    } else {
     print filename
   }
@@ -34,7 +34,7 @@ awkfind 'BEGIN {
  END {
   if (ENVIRON["long"]) {
    print "total " hbytes(totalsize)
-   for (i in a) print a[i]
+   for (i=1;i<=q;i++) print a[i]
   }
  }
 ' $* -maxdepth 1
