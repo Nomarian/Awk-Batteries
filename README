@@ -1,33 +1,30 @@
 
-Translation of the basic Unix toolkit in awk
+AWK directory containing collected snippets and code
 
-Simple/
-	Portable and often naive approach
 
-Modules/
+Extensions
+	.gawk is for the gnu implementation of awk (gawk)
+	.bawk is for busybox awk
+	.oawk is old/original awk
+	.mawk is mawk
+	.rawk is runawk
+	.awk is portable across all
+
+Directories:
+
+ Modules/
 	Functions and variables you can source from
 
-Commands/
+
+ Commands/
 	each command is a directory containing the command
 	extension .test are tests the command must pass
 	 If there are too many tests, they will be in a test/ directory
 	each extension corresponds to its interpreter
-	.gawk is gawk specific
-	.bawk is busybox awk
-	.oawk is old/original awk
-	.mawk is mawk
-	.rawk is runawk
-	.shawk is a shellscript wrapper
-	.awk is portable across all
 
-Shortest/
-	Shortest Implementation of Unix commands
 
-POSIX/
-	Tries to adhere to POSIX as much as possible
+ Units/
+	Sourceable code you can load but will mess with NR and FS
 
-RSFS/
-	Shortest Implementation but inherits RS or FS if set in ENVIRON
 
-Units/
-	Sourceable code you can import but is not that stable
+
