@@ -118,6 +118,8 @@ BEGIN {
  
  makesizes(sizeb)
  filename	= _basename_(file)
+ #extension = _basename_(filename,".")
+ 
  if (filetype == "directory") {
 	dirname = file
   } else {
