@@ -31,7 +31,7 @@ BEGIN { # try using (regex) ?
  r["Q"]		= "[^" q "]" # No quotes
  r["string"]	= q r["Q"] "*" q		# "string"
 
- #r["stresc"]	= q "([^\"\\\\]*(\\\\\\\")[^\"\\\\]*)+" q # "String\"with\"escapes"
+ r["stresc"]	= q "([^\"\\\\]*(\\\\\\\")[^\"\\\\]*)+" q # "String\"with\"escapes"
 # There's a dizzying amount of slashes here, it's ridiculous
  # r["escapedstring"]	= q "(" r["Q"] "|" "|"  ")*" q # "String\"with\"escapes"
  # r["stringesc"]	= r["string"] "|" r["stresc"] # "string" or "String\"with\"escapes"
@@ -43,6 +43,7 @@ BEGIN { # try using (regex) ?
 
  re		 = "(" r["string"] "|" r["Q"] ")*"
  r["StringOdd"]	 = "^" re q r["Q"] "*$"	# dangling quote
+# r["stringodd"]	 = re q r["Q"] "*"	# dangling quote
  r["StringEven"] = "^" re "$" # "contains an "" even "number" of quotes"
 
  r["8bit"]	= "(2[0-5][0-5]|1[0-9][0-9]|[0-9][0-9]?)" # 0-255
