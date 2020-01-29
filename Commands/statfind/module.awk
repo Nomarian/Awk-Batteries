@@ -118,12 +118,22 @@ BEGIN {
  
  makesizes(sizeb)
  filename	= _basename_(file)
- #extension = _basename_(filename,".")
- 
+ ext = ""
+
  if (filetype == "directory") {
 	dirname = file
   } else {
 	dirname	= _dirname_(file)
+ }
+
+ if (filetype == "regular file") {
+	ext=filename
+	# can't use match
+	if ( sub(/(\.[^.]+)$/,"\1",ext) ) {
+	  ext = substr(filename,length(ext)+1)
+	 } else {
+	  ext=""
+	}
  }
 }
 
