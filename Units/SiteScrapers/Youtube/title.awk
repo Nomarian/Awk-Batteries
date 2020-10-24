@@ -8,3 +8,5 @@
  match(s,/(\"[^\"]*\"|[^\"])*/) # This is r["StringEven"]
  title = substr(s,RSTART,RLENGTH)
 }
+
+/<meta property="og:title" content="[^"]+">/ {
