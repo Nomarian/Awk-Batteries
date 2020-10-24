@@ -1,5 +1,4 @@
-
-
+#!/usr/bin/awk -f
 
 #( round.awk --- do normal rounding
 #
@@ -33,23 +32,43 @@ function round(x,   ival, aval, fraction)
 
 # round.awk )#
 
-function isprimeu(n,	i, limit) { # Odd prime check
+# idk why but its there
+function multiply(x,y,i){
+ for (i=x;--y;) i+=x
+ return i
+}
+
+# Reminder
+function powerof(x,y,i){
+ #for (i=x;--y;) i*=x
+ for (i=x;--y;) i = multiply(x,i)
+ return i
+}
+
+function factors(n,	limit,a){
+ limit = int(sqrt(n))
+ a = 1 " " n
+ for (i=2;i<limit;i++)
+  if (n%i==0) a = a " " i " " n/i
+ return a # can't return an array, but strings are arrays so.
+ # remember to split()
+}
+
+function isprimeu(n,	i,limit) {
  limit = int(sqrt(n))
  for (i=3;i <= limit;i+=2)
   if (n%i==0) return 0
  return 1
 }
 
-function isprime(n) { # is n prime?
- if (n==2) return 1
- if (n<2 || n%2==0) return 0
- return isprimeu(n)
-}
-
-# returns prime number n (as in nth prime number)
 function primepos(n,	p){
- for (n-=(p=2+(n>1))-1;n;isprimeu(p) && n--)
-  p+=2
+ n -= ( (n==1) ? p=2 : p=3 ) - 1
+ while (n) f(p+=2) && n--
  return p
 }
 
+function isprime(n) {
+ if (n<3) return n==2
+ if (n%2==0) return 0
+ return isprimeu(n)
+}
