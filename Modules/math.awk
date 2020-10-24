@@ -33,3 +33,23 @@ function round(x,   ival, aval, fraction)
 
 # round.awk )#
 
+function isprimeu(n,	i, limit) { # Odd prime check
+ limit = int(sqrt(n))
+ for (i=3;i <= limit;i+=2)
+  if (n%i==0) return 0
+ return 1
+}
+
+function isprime(n) { # is n prime?
+ if (n==2) return 1
+ if (n<2 || n%2==0) return 0
+ return isprimeu(n)
+}
+
+# returns prime number n (as in nth prime number)
+function primepos(n,	p){
+ for (n-=(p=2+(n>1))-1;n;isprimeu(p) && n--)
+  p+=2
+ return p
+}
+
