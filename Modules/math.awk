@@ -38,7 +38,7 @@ function multiply(x,y,i){
  return i
 }
 
-# Reminder
+# Little test of speed I use between languages.
 function powerof(x,y,i){
  #for (i=x;--y;) i*=x
  for (i=x;--y;) i = multiply(x,i)
@@ -54,6 +54,7 @@ function factors(n,	limit,a){
  # remember to split()
 }
 
+# isprimenumber (but only checks for uneven numbers)
 function isprimeu(n,	i,limit) {
  limit = int(sqrt(n))
  for (i=3;i <= limit;i+=2)
@@ -63,7 +64,7 @@ function isprimeu(n,	i,limit) {
 
 function primepos(n,	p){
  n -= ( (n==1) ? p=2 : p=3 ) - 1
- while (n) f(p+=2) && n--
+ while (n) isprimeu(p+=2) && n--
  return p
 }
 
@@ -72,3 +73,6 @@ function isprime(n) {
  if (n%2==0) return 0
  return isprimeu(n)
 }
+
+function floor(n) { return int(n) }
+
