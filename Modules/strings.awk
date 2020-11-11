@@ -18,11 +18,14 @@
 # return length(_chars_ RS)
 #}
 
-function reversestr(string,	a, b, i){
- b = split(string,a,"")
- string = ""
- for (i=b;i>0;i--) string = string a[i]
+function strReverse(string,	a, i){
+ i = split(string,a,"")
+ for (string = "";i;) string = string a[i--]
  return string
+}
+
+function isPalindrome(s) { # t/f
+ return strReverse(s) == s
 }
 
 # This function is meant to be used when you want to use match
