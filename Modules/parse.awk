@@ -5,6 +5,18 @@
 
 # x/[\\"]/i/\\/
 
+function str2regex(s){
+ gsub("%.","\\.",s) # dots
+# gsub("%%","%",s) # unnecessary, matching directly
+ gsub("%d","0-9",s) # digits
+ gsub("%l","a-z",s) # lowercase letters
+ gsub("%u","A-Z",s) # uppercase letters
+ gsub("%x","0-9a-zA-F",s) # hex digits
+ # include a variable (must be literal)
+ # like @ because forth fetch?
+ return s
+}
+
 BEGIN { # try using (regex) ?
  #( Numbers )#
  rdigit		= "[0-9]"	# digit
@@ -54,3 +66,5 @@ BEGIN { # try using (regex) ?
 
 # you can print a variable and get the literal regex that you can use in your code
 # this could be an array called regexes
+
+
