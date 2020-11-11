@@ -1,6 +1,29 @@
 
 # -------- Modules/files.awk
 
+#function cleanfullpath(dir){
+# gsub(/\/\.\/|\/.$/,		"/",	dir) # /./ -> /
+# gsub(/\/+/,				"/",	dir) # // -> /
+# gsub(/[^\/]+\/\.\.\/+/,	"",		dir) # /1/dir/../ -> /1/
+## gsub(//]+\/\.\.\/+/,	"",		dir) # /1/dir/../ -> /1/
+# return dir
+#}
+
+function cleanfullpath(dir){
+
+# inside the path
+  gsub("/\\./","/",dir)
+  gsub("[^/]+/\\.\\./","",dir)
+
+ gsub(/\/+/,	"/",	dir) # // -> /
+
+# outside the path
+ gsub("^\\./|^\\.\\./|[^/]+/\\.\\.$|/\\.$","",dir)
+
+ return dir
+}
+
+# mawk says this is a bug
 function dirname(_dirname_){ 
   sub(/\/[^/]+$/,"",_dirname_)
   return _dirname_
