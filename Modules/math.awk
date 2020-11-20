@@ -54,12 +54,12 @@ function factors(n,	limit,a){
  # remember to split()
 }
 
-function factors(n,	limit,i){
- limit = int(sqrt(n))
- for (i=2;i<limit;i++) {
-  if (n%i==0) { print " " i ":" n/i }
- }
-}
+#function factors(n,	limit,i){
+# limit = int(sqrt(n))
+# for (i=2;i<limit;i++) {
+#  if (n%i==0) { print " " i ":" n/i }
+# }
+#}
 
 # isprimenumber (but only checks for uneven numbers)
 function isprimeu(n,	i,limit) {
@@ -82,7 +82,6 @@ function isprime(n) {
 }
 
 function floor(n) { return int(n) }
-
 
 function primefactors(n,	p,c,a,an){
  if (n==1) return a[1] = n
