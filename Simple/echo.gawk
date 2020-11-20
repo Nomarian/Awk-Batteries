@@ -1,4 +1,4 @@
-#!/usr/bin/awk -f
+#!/usr/bin/gawk -E
 
 BEGIN {
  ARGC -= ARGC>1 # ARGC cannot be 1 or 0
