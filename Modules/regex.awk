@@ -3,6 +3,12 @@
 # Sets regex so you can concatenate and create your regex
 # values are inexact, concatenate ^ and $ to r
 
+# Do note that r is used as an array that holds all the regular expressions
+# also, RE
+
+# TODO
+# As a rule, if | in regex, surround with ()
+
 # x/[\\"]/i/\\/
 
 BEGIN { # try using (regex) ?
@@ -46,22 +52,30 @@ BEGIN { # try using (regex) ?
 # r["stringodd"]	 = re q r["Q"] "*"	# dangling quote
  r["StringEven"] = "^" re "$" # "contains an "" even "number" of quotes"
 
- r["8bit"]	= "(2[0-5][0-5]|1[0-9][0-9]|[0-9][0-9]?)" # 0-255
+ # Simplified: %d|%d%d|1%d%d|2[0-4][0-9]|25[0-5]
+ r["8bit"]	= "(1?[0-9][0-9]?|2[0-4][0-9]|25[0-5])" # 0-255 (or 0-199 | 200-249 | 250-255)
  r["hex"]	= "[0-9a-fA-F]"
  
  r["ipv4"] = r["8bit"] "\\." r["8bit"] "\\." r["8bit"] "\\." r["8bit"]
 
-# Matches ipv6 string
- re = r["hex"] "?"
- re = re re re re # re{4}, but oawk has no repetitions
- re = re ":" re ":" re ":" re ":" re ":" re ":" re ":" re
- r["ipv6"] = re; re=""
+# Matches ipv6 string (UNTESTED)
+ RE = r["hex"] "?"
+ RE = RE RE RE RE # RE{4}, but oawk has no repetitions
+ RE = RE ":" RE ":" RE ":" RE ":" RE ":" RE ":" RE ":" RE
+
+ r["ipv6"] = RE; RE=""
+
+# for (i=7;i--;) # another method
+#  r["ipv6"] = r["ipv6"] r["hex"]"?" r["hex"]"?" r["hex"]"?" r["hex"]"?" ":"
+# r["ipv6"] = r["ipv6"] r["hex"]"?" r["hex"]"?" r["hex"]"?" r["hex"]"?"
 
 # Matches any ip
- r["ip"] = r["ipv4"] "|" r["ipv6"]
+ r["ip"] = "(" r["ipv6"] "|" r["ipv4"] ")"
 
- re = ""
 }
+
+$0 ~ "^" r["ip"] "$"
+#END {print r["ipv6"];print length(r["ipv6"])}
 
 function printexport(s){ # prints with escapes for use in strings \"
  gsub(/"/,"\\\"",s)
