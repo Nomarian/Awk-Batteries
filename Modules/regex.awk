@@ -74,9 +74,6 @@ BEGIN { # try using (regex) ?
 
 }
 
-$0 ~ "^" r["ip"] "$"
-#END {print r["ipv6"];print length(r["ipv6"])}
-
 function printexport(s){ # prints with escapes for use in strings \"
  gsub(/"/,"\\\"",s)
  print s
