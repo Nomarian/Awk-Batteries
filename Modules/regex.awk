@@ -4,7 +4,7 @@
 # values are inexact, concatenate ^ and $ to r
 
 # Do note that r is used as an array that holds all the regular expressions
-# also, RE
+# also, RE is used
 
 # TODO
 # As a rule, if | in regex, surround with ()
