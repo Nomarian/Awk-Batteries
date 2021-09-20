@@ -16,4 +16,7 @@ ENDFILE {
  tw+=words;tc+=chars
 }
 
-END { print " " NR,tw,tc,"total" }
+END {
+ if (FNR!=NR)
+  print " " NR,tw,tc,"total"
+}
