@@ -14,13 +14,13 @@ lfn != FILENAME { # mimics BEGINFILE
 
 {
  words += NF
- chars += length($0 ORS) # bug last line is counted
- # no way to know if the last line has a character
+ chars += length($0 ORS)
 }
 
 # cannot mimic ENDFILE
 
 END {
  print " " FNR,words,chars,FILENAME
- print " " NR,tw+words,tc+chars,"total"
+ if (FNR!=NR)
+  print " " NR,tw+words,tc+chars,"total"
 }
