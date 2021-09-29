@@ -11,6 +11,11 @@
 
 # x/[\\"]/i/\\/
 
+function SanitizeRegex(s){
+ gsub(/[\[\]()^.$+*?]/,"\\\\&",s);
+ return s
+}
+
 BEGIN { # try using (regex) ?
  #( Numbers )#
  r["digit"]	= "[0-9]"	# digit
