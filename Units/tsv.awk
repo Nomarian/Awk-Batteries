@@ -1,5 +1,2 @@
 
-BEGIN {
- FS="\t+"
- OFS="\t"
-}
+BEGIN { FS=OFS="\t" }
