@@ -1,8 +1,10 @@
 
-#BEGIN {
+BEGIN {
+ for (i=127;--i;)
+  ascii[i] = sprintf("%c", i)'
 # word="\w"
 # line="\n"
-#}
+}
 
 #function words(_string_){
 # # returns word Count
