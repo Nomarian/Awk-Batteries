@@ -5,8 +5,11 @@
 # Example
 # gawk -f ./yaml.awk -e 'tree == "foo:bar:" && $1=="baz:" {sub(/val/,"bar")} {print}'
 
-# you can also use $2, but you have to run addws
+# you can also use $2, but you have to run addws to fix the record
 # gawk -f ./yaml.awk -e 'tree == "foo:bar:" && $1=="baz:" {$2="bar";addws()} {print}'
+
+# its portable, but written in a way so that you can use -i inplace, no {next} are used
+# gawk -i inplace -f ./yaml.awk -e 'tree == "foo:bar:" && $1=="baz:" {$2="bar";addws()} {print}'
 
 function rebuild() { tree=""
  for (i=0;i<=ws;i++)
