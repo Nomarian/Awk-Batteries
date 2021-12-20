@@ -79,7 +79,13 @@ BEGIN { # try using (regex) ?
 
 }
 
-function printexport(s){ # prints with escapes for use in strings \"
+function printexport(s){ # prints with escapes for use in regex
+ gsub(/"/,"\\\"",s)
+ print s
+}
+
+function printstrexport(s){ # prints with escapes for use in strings
+ gsub(/\\/,"\\\\",s)
  gsub(/"/,"\\\"",s)
  print s
 }
