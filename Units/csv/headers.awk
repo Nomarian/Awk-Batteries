@@ -8,10 +8,7 @@
 # This allows you to call from your program, csvheader["name"]
 # thus not worrying about where the field number is in your code
 # Be aware that a split(/,/) is used for parsing the fields, so you cannot have commas in your headers
-
-
-# slightly confused whether "1" should be a header, 1 should not be, but is "1" allowed?
-# "1" is allowed
+# of course you still have to use $(csvheader["name"]) which is tedious
 
 BEGIN {
 # ignore empty lines at the beginning?

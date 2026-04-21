@@ -1,0 +1,14 @@
+#!/usr/bin/rc
+
+~ $#* 0 && { echo 'badrg awkpattern'; exit }
+*=$^*
+find -type f -print0 | xargs -0 gawk $1^'{
+  if (y==0 && y=1) print FILENAME
+  print FNR ":" $0
+ }
+ ENDFILE {
+  if (y) print ""
+  y=0
+ }
+'
+
